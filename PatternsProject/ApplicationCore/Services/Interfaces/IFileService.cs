@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ApplicationCore.Models;
+using ApplicationCore.Services.Services;
 
-namespace ApplicationCore.Services.Interfaces
+namespace ApplicationCore.Services.Interfaces;
+
+public interface IFileService : IBaseService<FileModel>
 {
-	internal interface IFileService
-	{
-	}
 }

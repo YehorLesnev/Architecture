@@ -1,6 +1,9 @@
-﻿using ApplicationCore.Repositories.Implementations;
+﻿using ApplicationCore.CQRS.Queries;
+using ApplicationCore.Models;
+using ApplicationCore.Repositories.Implementations;
 using ApplicationCore.Repositories.Interfaces;
 using ApplicationCore.Services.Implementations;
+using ApplicationCore.Services.Implementations.Handlers;
 using ApplicationCore.Services.Interfaces;
 
 namespace HRMS.Extensions;
@@ -31,6 +34,13 @@ public static class ServicesRegistrationExtensions
 		serviceCollection.AddScoped<INotificationService, NotificationService>();
 		serviceCollection.AddScoped<IFileService, FileService>();
 		serviceCollection.AddScoped<ICommentService, CommentService>();
+
+		//handlers
+		serviceCollection.AddScoped<IMediator, Mediator>();
+
+
+		serviceCollection.AddScoped<IRequestHandler<GetUserByIdQuery, UserModel>, GetUserByIdHandler>();
+		serviceCollection.AddScoped<IRequestHandler<GetUsersByManagerQuery, IEnumerable<UserModel>>, GetUsersByManagerHandler>();
 
 		return serviceCollection;
 	}
