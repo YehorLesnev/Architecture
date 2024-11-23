@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace ApplicationCore.Models.Dto.File;
 
 public class CreateFileDto
 {
-	public byte[] FileContent { get; set; }
-	public Guid RequestId { get; set; }
+	public required IFormFile FileContent { get; set; }
+	public required Guid RequestId { get; set; }
 }

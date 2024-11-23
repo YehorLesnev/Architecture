@@ -1,5 +1,4 @@
-﻿using ApplicationCore.Identity;
-using ApplicationCore.Identity.JwtConfig;
+﻿using ApplicationCore.Identity.JwtConfig;
 using ApplicationCore.Models;
 using ApplicationCore.Models.Dto.Auth;
 using ApplicationCore.Models.Dto.User;

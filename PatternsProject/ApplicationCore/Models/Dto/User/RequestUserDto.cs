@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace ApplicationCore.Identity;
+namespace ApplicationCore.Models.Dto.User;
 
 public class RequestUserDto
 {
@@ -14,7 +14,7 @@ public class RequestUserDto
 
     public required bool IsManager { get; set; }
 
-	public required IFormFile ProfilePicture { get; set; }
+    public required IFormFile ProfilePicture { get; set; }
 
-	public required string Password { get; set; }
+    public required string Password { get; set; }
 }
