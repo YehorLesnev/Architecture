@@ -398,3 +398,8 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+PatternsProject/HRMS/.vs/HRMS/CopilotIndices/0.2.1648.49400/CodeChunks.db
+*.db
+*.db-shm
+*.vsidx
+/PatternsProject/HRMS/.vs
