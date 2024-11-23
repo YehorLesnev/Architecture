@@ -1,5 +1,7 @@
-﻿using ApplicationCore.CQRS.Commands.Comment;
+﻿using ApplicationCore.CQRS.Commands.Balance;
+using ApplicationCore.CQRS.Commands.Comment;
 using ApplicationCore.CQRS.Commands.Request;
+using ApplicationCore.CQRS.Queries.Balance;
 using ApplicationCore.CQRS.Queries.Comment;
 using ApplicationCore.CQRS.Queries.Request;
 using ApplicationCore.CQRS.Queries.User;
@@ -7,6 +9,7 @@ using ApplicationCore.Models;
 using ApplicationCore.Repositories.Implementations;
 using ApplicationCore.Repositories.Interfaces;
 using ApplicationCore.Services.Implementations;
+using ApplicationCore.Services.Implementations.Handlers.Balance;
 using ApplicationCore.Services.Implementations.Handlers.Comment;
 using ApplicationCore.Services.Implementations.Handlers.Request;
 using ApplicationCore.Services.Implementations.Handlers.User;
@@ -56,6 +59,10 @@ public static class ServicesRegistrationExtensions
 
 		serviceCollection.AddScoped<IRequestHandler<CreateCommentCommand>, CreateCommentHandler>();
 		serviceCollection.AddScoped<IRequestHandler<GetCommentsByRequestQuery, IEnumerable<CommentModel>>, GetCommentsByRequestHandler>();
+		
+		serviceCollection.AddScoped<IRequestHandler<UpdateBalanceCommand>, UpdateBalanceHandler>();
+		serviceCollection.AddScoped<IRequestHandler<CreateUserBalanceCommand>, CreateUserBalanceHandler>();
+		serviceCollection.AddScoped<IRequestHandler<GetBalancesByUserQuery, IEnumerable<BalanceModel>>, GetBalancesByUserHandler>();
 
 		return serviceCollection;
 	}

@@ -12,16 +12,18 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 using ApplicationCore.Services.Interfaces;
+using ApplicationCore.CQRS.Commands.Balance;
 
 namespace HRMS.Controllers;
 
 [Route("[controller]")]
 [ApiController]
 public class AuthController(
+IMediator mediator,
 IMapper mapper,
 IUserService userService,
 UserManager<UserModel> userManager,
-IJwtTokenConfig jwtConfig) : ControllerBase
+IJwtTokenConfig jwtConfig) : BaseController(mediator)
 {
 	[HttpPost("Register")]
 	[AllowAnonymous]
@@ -48,6 +50,8 @@ IJwtTokenConfig jwtConfig) : ControllerBase
 
 		if (createdUser is null)
 			return BadRequest("Couldn't create UserModel");
+
+		await Mediator.SendAsync(new CreateUserBalanceCommand{ UserId = createdUser.Id });
 
 		return Created(nameof(RegisterAsync), mapper.Map<ResponseUserDto>(createdUser));
 	}
