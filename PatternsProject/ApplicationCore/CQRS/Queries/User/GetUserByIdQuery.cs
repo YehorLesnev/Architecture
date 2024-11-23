@@ -1,7 +1,7 @@
 ﻿using ApplicationCore.Models;
 using ApplicationCore.Services.Interfaces;
 
-namespace ApplicationCore.CQRS.Queries;
+namespace ApplicationCore.CQRS.Queries.User;
 
 public class GetUserByIdQuery : IRequest<UserModel>
 {

@@ -8,8 +8,7 @@ using AutoMapper;
 using ApplicationCore.Models.Dto.User;
 using ApplicationCore.Identity;
 using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
-using System.Collections;
+using ApplicationCore.CQRS.Commands.Request;
 
 namespace ApplicationCore.Configuration.Mapping;
 
@@ -19,10 +18,17 @@ public class MappingProfile : Profile
 	{
 		// Request Mappings
 		CreateMap<RequestModel, ResponseRequestDto>();
+
 		CreateMap<CreateRequestDto, RequestModel>()
 			.ForMember(dest => dest.Id, opt => opt.Ignore())
 			.ForMember(dest => dest.DateCreated, opt => opt.Ignore());
+		CreateMap<CreateRequestDto, CreateRequestCommand>();
+		CreateMap<CreateRequestCommand, RequestModel>();
+
 		CreateMap<UpdateRequestDto, RequestModel>();
+		CreateMap<UpdateRequestDto, UpdateRequestCommand>();
+
+		CreateMap<DeleteRequestCommand, RequestModel>();
 
 		// User Mappings
 		CreateMap<UserModel, ResponseUserDto>();

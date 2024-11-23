@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.CQRS.Queries;
+using ApplicationCore.CQRS.Queries.User;
 using ApplicationCore.Models;
 using ApplicationCore.Models.Dto.User;
 using ApplicationCore.Services.Interfaces;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HRMS.Controllers;
 
-[Route("api/users")]
+[Route("user")]
 public class UserController(IMediator mediator, IMapper mapper) : BaseController(mediator)
 {
 	[HttpGet("{userId}")]

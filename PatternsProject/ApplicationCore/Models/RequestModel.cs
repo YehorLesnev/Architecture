@@ -17,7 +17,7 @@ public class RequestModel
 
 	public string Status { get; set; }
 
-	public DateTime DateCreated { get; set; }
+	public DateTime DateCreated { get; set; } = DateTime.UtcNow;
 
 	public Guid ManagerId { get; set; }
 

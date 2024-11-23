@@ -3,6 +3,7 @@ using ApplicationCore.Configuration.Mapping;
 using ApplicationCore.Identity.JwtConfig;
 using ApplicationCore.Models;
 using HRMS.Extensions;
+using HRMS.Middleware;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -19,7 +20,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 			builder.Configuration.GetConnectionString("DatabaseSQL"),
 			b => b.MigrationsAssembly("Infrastructure"))
 		.EnableSensitiveDataLogging());
-
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -59,6 +59,8 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.RegisterRepositories();
 builder.Services.RegisterServices();
 
+builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -67,6 +69,8 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 	app.UseDeveloperExceptionPage();
 }
+
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 await app.ApplyMigrations();
 

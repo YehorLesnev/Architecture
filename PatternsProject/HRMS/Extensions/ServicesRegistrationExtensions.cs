@@ -1,9 +1,12 @@
-﻿using ApplicationCore.CQRS.Queries;
+﻿using ApplicationCore.CQRS.Commands.Request;
+using ApplicationCore.CQRS.Queries.Request;
+using ApplicationCore.CQRS.Queries.User;
 using ApplicationCore.Models;
 using ApplicationCore.Repositories.Implementations;
 using ApplicationCore.Repositories.Interfaces;
 using ApplicationCore.Services.Implementations;
-using ApplicationCore.Services.Implementations.Handlers;
+using ApplicationCore.Services.Implementations.Handlers.Request;
+using ApplicationCore.Services.Implementations.Handlers.User;
 using ApplicationCore.Services.Interfaces;
 
 namespace HRMS.Extensions;
@@ -38,9 +41,15 @@ public static class ServicesRegistrationExtensions
 		//handlers
 		serviceCollection.AddScoped<IMediator, Mediator>();
 
-
 		serviceCollection.AddScoped<IRequestHandler<GetUserByIdQuery, UserModel>, GetUserByIdHandler>();
 		serviceCollection.AddScoped<IRequestHandler<GetUsersByManagerQuery, IEnumerable<UserModel>>, GetUsersByManagerHandler>();
+
+		serviceCollection.AddScoped< IRequestHandler<GetRequestsByUserQuery, IEnumerable<RequestModel>>, GetRequestsByUserHandler>();
+		serviceCollection.AddScoped<IRequestHandler<GetRequestsByManagerQuery, IEnumerable<RequestModel>>, GetRequestsByManagerHandler>();
+
+		serviceCollection.AddScoped<IRequestHandler<CreateRequestCommand, RequestModel>, CreateRequestHandler>();
+		serviceCollection.AddScoped<IRequestHandler<UpdateRequestCommand, RequestModel>, UpdateRequestHandler>();
+		serviceCollection.AddScoped<IRequestHandler<DeleteRequestCommand>, DeleteRequestHandler>();
 
 		return serviceCollection;
 	}
