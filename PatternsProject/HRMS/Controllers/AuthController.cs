@@ -86,7 +86,7 @@ IJwtTokenConfig jwtConfig) : ControllerBase
 
 		return Ok(new ResponseLoginDto
 		{
-			Email = UserModel.Email,
+			Email = UserModel.Email ?? string.Empty,
 			Roles = await userManager.GetRolesAsync(UserModel),
 			Token = new JwtSecurityTokenHandler().WriteToken(token),
 			Expires = tokenExpirationDate
@@ -99,8 +99,8 @@ IJwtTokenConfig jwtConfig) : ControllerBase
 
 		var authClaims = new List<Claim>
 		{
-			new(ClaimTypes.Name, UserModel.UserName),
-			new(ClaimTypes.Email, UserModel.Email),
+			new(ClaimTypes.Name, UserModel.UserName ?? string.Empty),
+			new(ClaimTypes.Email, UserModel.Email ?? string.Empty),
 			new("IsManager", UserModel.IsManager.ToString()),
 			new(ClaimTypes.NameIdentifier, UserModel.Id.ToString()),
 			new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
