@@ -9,6 +9,7 @@ using ApplicationCore.Models.Dto.User;
 using ApplicationCore.Identity;
 using Microsoft.AspNetCore.Http;
 using ApplicationCore.CQRS.Commands.Request;
+using ApplicationCore.CQRS.Commands.Comment;
 
 namespace ApplicationCore.Configuration.Mapping;
 
@@ -45,6 +46,9 @@ public class MappingProfile : Profile
 			.ForMember(dest => dest.CommentId, opt => opt.Ignore())
 			.ForMember(dest => dest.DateTimeCreated, opt => opt.Ignore());
 
+		CreateMap<CreateCommentDto, CreateCommentCommand>();
+		CreateMap<CreateCommentCommand, CommentModel>();
+		
 		// File Mappings
 		CreateMap<FileModel, ResponseFileDto>();
 		CreateMap<CreateFileDto, FileModel>()

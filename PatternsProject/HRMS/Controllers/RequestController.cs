@@ -15,14 +15,14 @@ public class RequestController(IMediator mediator, IMapper mapper) : BaseControl
 	public async Task<IActionResult> GetRequestsByUser([FromRoute] Guid userId)
 	{
 		var requests = await Mediator.QueryListAsync<RequestModel>(new GetRequestsByUserQuery { UserId = userId });
-		return Ok(requests);
+		return Ok(mapper.Map<IEnumerable<ResponseRequestDto>>(requests));
 	}
 
 	[HttpGet("managerId/{managerId}")]
 	public async Task<IActionResult> GetRequestsByManager([FromRoute] Guid managerId)
 	{
 		var requests = await Mediator.QueryListAsync<RequestModel>(new GetRequestsByManagerQuery { ManagerId = managerId });
-		return Ok(requests);
+		return Ok(mapper.Map<IEnumerable<ResponseRequestDto>>(requests));
 	}
 
 	[HttpPost]

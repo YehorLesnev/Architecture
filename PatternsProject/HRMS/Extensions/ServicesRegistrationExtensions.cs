@@ -1,10 +1,13 @@
-﻿using ApplicationCore.CQRS.Commands.Request;
+﻿using ApplicationCore.CQRS.Commands.Comment;
+using ApplicationCore.CQRS.Commands.Request;
+using ApplicationCore.CQRS.Queries.Comment;
 using ApplicationCore.CQRS.Queries.Request;
 using ApplicationCore.CQRS.Queries.User;
 using ApplicationCore.Models;
 using ApplicationCore.Repositories.Implementations;
 using ApplicationCore.Repositories.Interfaces;
 using ApplicationCore.Services.Implementations;
+using ApplicationCore.Services.Implementations.Handlers.Comment;
 using ApplicationCore.Services.Implementations.Handlers.Request;
 using ApplicationCore.Services.Implementations.Handlers.User;
 using ApplicationCore.Services.Interfaces;
@@ -50,6 +53,9 @@ public static class ServicesRegistrationExtensions
 		serviceCollection.AddScoped<IRequestHandler<CreateRequestCommand, RequestModel>, CreateRequestHandler>();
 		serviceCollection.AddScoped<IRequestHandler<UpdateRequestCommand, RequestModel>, UpdateRequestHandler>();
 		serviceCollection.AddScoped<IRequestHandler<DeleteRequestCommand>, DeleteRequestHandler>();
+
+		serviceCollection.AddScoped<IRequestHandler<CreateCommentCommand>, CreateCommentHandler>();
+		serviceCollection.AddScoped<IRequestHandler<GetCommentsByRequestQuery, IEnumerable<CommentModel>>, GetCommentsByRequestHandler>();
 
 		return serviceCollection;
 	}

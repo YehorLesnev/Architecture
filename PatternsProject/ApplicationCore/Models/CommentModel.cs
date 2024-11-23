@@ -13,7 +13,7 @@ public class CommentModel
 
 	public required Guid UserId { get; set; }
 
-	public DateTime DateTimeCreated { get; set; }
+	public DateTime DateTimeCreated { get; set; } = DateTime.UtcNow;
 
 
 	public RequestModel Request { get; set; }
