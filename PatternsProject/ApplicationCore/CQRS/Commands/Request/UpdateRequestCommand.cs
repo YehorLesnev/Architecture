@@ -1,6 +1,5 @@
 ﻿using ApplicationCore.Models;
 using ApplicationCore.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ApplicationCore.CQRS.Commands.Request;
 
@@ -13,4 +12,6 @@ public class UpdateRequestCommand : IRequest<RequestModel>
     public DateTime? DateTo { get; set; }
     public string Status { get; set; }
     public Guid ManagerId { get; set; }
+
+    public string NotificationText { get; set; } = string.Empty;
 }

@@ -8,6 +8,8 @@ using ApplicationCore.CQRS.Queries.File;
 using ApplicationCore.CQRS.Queries.Request;
 using ApplicationCore.CQRS.Queries.User;
 using ApplicationCore.Models;
+using ApplicationCore.Observer.Implementations;
+using ApplicationCore.Observer.Interfaces;
 using ApplicationCore.Repositories.Implementations;
 using ApplicationCore.Repositories.Interfaces;
 using ApplicationCore.Services.Implementations;
@@ -70,6 +72,9 @@ public static class ServicesRegistrationExtensions
 		serviceCollection.AddScoped<IRequestHandler<GetFilesByRequestQuery, IEnumerable<FileModel>>, GetFilesByRequestHandler>();
 		serviceCollection.AddScoped<IRequestHandler<CreateFileCommand>, CreateFileHandler>();
 
+		// observer
+		serviceCollection.AddSingleton<ISubject, NotificationSubject>();
+		serviceCollection.AddSingleton<NotificationService>();
 		return serviceCollection;
 	}
 }

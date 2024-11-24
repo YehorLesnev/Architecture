@@ -8,4 +8,6 @@ public class UpdateRequestDto
 	public string Status { get; set; }
 	public bool IsApproved { get; set; }
 	public Guid ManagerId { get; set; }
+
+	public string NotificationText { get; set; } = string.Empty;
 }
