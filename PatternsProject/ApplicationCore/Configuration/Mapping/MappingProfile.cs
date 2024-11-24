@@ -6,10 +6,10 @@ using ApplicationCore.Models.Dto.Request;
 using ApplicationCore.Models;
 using AutoMapper;
 using ApplicationCore.Models.Dto.User;
-using ApplicationCore.Identity;
 using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
-using System.Collections;
+using ApplicationCore.CQRS.Commands.Request;
+using ApplicationCore.CQRS.Commands.Comment;
+using ApplicationCore.CQRS.Commands.File;
 
 namespace ApplicationCore.Configuration.Mapping;
 
@@ -19,10 +19,17 @@ public class MappingProfile : Profile
 	{
 		// Request Mappings
 		CreateMap<RequestModel, ResponseRequestDto>();
+
 		CreateMap<CreateRequestDto, RequestModel>()
 			.ForMember(dest => dest.Id, opt => opt.Ignore())
 			.ForMember(dest => dest.DateCreated, opt => opt.Ignore());
+		CreateMap<CreateRequestDto, CreateRequestCommand>();
+		CreateMap<CreateRequestCommand, RequestModel>();
+
 		CreateMap<UpdateRequestDto, RequestModel>();
+		CreateMap<UpdateRequestDto, UpdateRequestCommand>();
+
+		CreateMap<DeleteRequestCommand, RequestModel>();
 
 		// User Mappings
 		CreateMap<UserModel, ResponseUserDto>();
@@ -31,7 +38,7 @@ public class MappingProfile : Profile
 			.ForMember(dest => dest.ProfilePicture, opt => opt.Ignore())
 			.AfterMap((src, dest) => dest.ProfilePicture = (src.ProfilePicture is null)
 						? string.Empty
-						: Convert.ToBase64String(GetProfilePicture(src.ProfilePicture)));
+						: Convert.ToBase64String(GetFormFileBytes(src.ProfilePicture)));
 
 		// Comment Mappings
 		CreateMap<CommentModel, ResponseCommentDto>();
@@ -39,10 +46,26 @@ public class MappingProfile : Profile
 			.ForMember(dest => dest.CommentId, opt => opt.Ignore())
 			.ForMember(dest => dest.DateTimeCreated, opt => opt.Ignore());
 
+		CreateMap<CreateCommentDto, CreateCommentCommand>();
+		CreateMap<CreateCommentCommand, CommentModel>();
+		
 		// File Mappings
-		CreateMap<FileModel, ResponseFileDto>();
+		CreateMap<FileModel, ResponseFileDto>()
+			.ForMember(dest => dest.FileContent, opt => opt.Ignore())
+			.AfterMap((src, dest) => dest.FileContent = src.FileContent is null 
+				? string.Empty
+				: Convert.ToBase64String(src.FileContent));
+		CreateMap<CreateFileCommand, FileModel>();
 		CreateMap<CreateFileDto, FileModel>()
-			.ForMember(dest => dest.FileId, opt => opt.Ignore());
+			.ForMember(dest => dest.FileContent, opt => opt.Ignore())
+			.AfterMap((src, dest) => dest.FileContent = src.FileContent is null 
+				? []
+				: GetFormFileBytes(src.FileContent));
+		CreateMap<CreateFileDto, CreateFileCommand>()
+			.ForMember(dest => dest.FileContent, opt => opt.Ignore())
+			.AfterMap((src, dest) => dest.FileContent = src.FileContent is null 
+				? []
+				: GetFormFileBytes(src.FileContent));
 
 		// Notification Mappings
 		CreateMap<NotificationModel, ResponseNotificationDto>();
@@ -56,11 +79,11 @@ public class MappingProfile : Profile
 			.ForMember(dest => dest.BalanceId, opt => opt.Ignore());
 	}
 
-	private static byte[] GetProfilePicture(IFormFile profilePicture)
+	private static byte[] GetFormFileBytes(IFormFile file)
 	{
 		using var memoryStream = new MemoryStream();
 
-		profilePicture.CopyTo(memoryStream);
+		file.CopyTo(memoryStream);
 
 		return memoryStream.ToArray();
 	}

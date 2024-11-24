@@ -1,5 +1,4 @@
-﻿using ApplicationCore.Identity;
-using ApplicationCore.Identity.JwtConfig;
+﻿using ApplicationCore.Identity.JwtConfig;
 using ApplicationCore.Models;
 using ApplicationCore.Models.Dto.Auth;
 using ApplicationCore.Models.Dto.User;
@@ -12,16 +11,18 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 using ApplicationCore.Services.Interfaces;
+using ApplicationCore.CQRS.Commands.Balance;
 
 namespace HRMS.Controllers;
 
 [Route("[controller]")]
 [ApiController]
 public class AuthController(
+IMediator mediator,
 IMapper mapper,
 IUserService userService,
 UserManager<UserModel> userManager,
-IJwtTokenConfig jwtConfig) : ControllerBase
+IJwtTokenConfig jwtConfig) : BaseController(mediator)
 {
 	[HttpPost("Register")]
 	[AllowAnonymous]
@@ -48,6 +49,8 @@ IJwtTokenConfig jwtConfig) : ControllerBase
 
 		if (createdUser is null)
 			return BadRequest("Couldn't create UserModel");
+
+		await Mediator.SendAsync(new CreateUserBalanceCommand{ UserId = createdUser.Id });
 
 		return Created(nameof(RegisterAsync), mapper.Map<ResponseUserDto>(createdUser));
 	}
@@ -86,7 +89,7 @@ IJwtTokenConfig jwtConfig) : ControllerBase
 
 		return Ok(new ResponseLoginDto
 		{
-			Email = UserModel.Email,
+			Email = UserModel.Email ?? string.Empty,
 			Roles = await userManager.GetRolesAsync(UserModel),
 			Token = new JwtSecurityTokenHandler().WriteToken(token),
 			Expires = tokenExpirationDate
@@ -99,8 +102,8 @@ IJwtTokenConfig jwtConfig) : ControllerBase
 
 		var authClaims = new List<Claim>
 		{
-			new(ClaimTypes.Name, UserModel.UserName),
-			new(ClaimTypes.Email, UserModel.Email),
+			new(ClaimTypes.Name, UserModel.UserName ?? string.Empty),
+			new(ClaimTypes.Email, UserModel.Email ?? string.Empty),
 			new("IsManager", UserModel.IsManager.ToString()),
 			new(ClaimTypes.NameIdentifier, UserModel.Id.ToString()),
 			new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
