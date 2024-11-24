@@ -22,7 +22,10 @@ jobs:
         dotnet-version: 8.0.x
     - name: Restore dependencies
       run: dotnet restore HRMS.sln
+      working-directory: src/PatternsProject
     - name: Build
       run: dotnet build HRMS.sln --no-restore
+      working-directory: src/PatternsProject
     - name: Test
       run: dotnet test HRMS.sln --no-build --verbosity normal
+      working-directory: src/PatternsProject
