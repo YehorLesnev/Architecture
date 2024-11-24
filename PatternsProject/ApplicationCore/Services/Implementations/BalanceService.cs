@@ -95,7 +95,7 @@ public class BalanceService(IBalanceRepository repository)
 
 		var totalDays = BalanceHelper.GetTotalDays(request.DateFrom, request.DateTo);
 
-		if(!request.IsApproved && DateTime.UtcNow < request.DateTo)
+		if(!request.IsApproved || DateTime.UtcNow < request.DateFrom)
 		{
 			balance.BalanceAmount += totalDays;
 			repository.Update(balance);
