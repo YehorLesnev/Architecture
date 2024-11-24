@@ -89,7 +89,7 @@ IJwtTokenConfig jwtConfig) : BaseController(mediator)
 
 		return Ok(new ResponseLoginDto
 		{
-			Email = UserModel.Email ?? string.Empty,
+			UserId = UserModel.Id,
 			Roles = await userManager.GetRolesAsync(UserModel),
 			Token = new JwtSecurityTokenHandler().WriteToken(token),
 			Expires = tokenExpirationDate
