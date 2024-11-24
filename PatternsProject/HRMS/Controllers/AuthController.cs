@@ -35,6 +35,8 @@ IJwtTokenConfig jwtConfig) : BaseController(mediator)
 			return BadRequest("UserModel with specified email is already exists");
 
 		var UserModel = mapper.Map<UserModel>(registerDto);
+		var managerId = (await userService.GetAsync(x => x.IsManager))?.Id;
+		UserModel.ManagerId = managerId;
 
 		try
 		{

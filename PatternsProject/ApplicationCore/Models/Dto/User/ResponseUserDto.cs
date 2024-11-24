@@ -6,5 +6,6 @@ public class ResponseUserDto
     public string FullName { get; set; }
     public string Position { get; set; }
     public bool IsManager { get; set; }
+    public Guid? ManagerId { get; set; }
     public string ProfilePicture { get; set; }
 }
