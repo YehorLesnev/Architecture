@@ -3,17 +3,20 @@ using ApplicationCore.CQRS.Commands.Request;
 using ApplicationCore.Models;
 using ApplicationCore.Observer.Implementations;
 using ApplicationCore.Services.Interfaces;
+using AutoMapper;
 
 namespace ApplicationCore.Services.Implementations.Handlers.Request;
 
-public class UpdateRequestHandler(IRequestService service, IUserService userService, NotificationObserverService notificationObserverService) : IRequestHandler<UpdateRequestCommand, RequestModel>
+public class UpdateRequestHandler(IRequestService service, IUserService userService, IBalanceService balanceService, IMapper mapper, NotificationObserverService notificationObserverService) : IRequestHandler<UpdateRequestCommand, RequestModel>
 {
 	public async Task<RequestModel?> HandleAsync(UpdateRequestCommand request)
 	{
 		var requestModel = await service.GetAsync(r => r.Id == request.RequestId, asNoTracking: true);
 
-		if (requestModel is null || await userService.GetAsync(u => u.Id == request.ManagerId) is null)
+		if (requestModel is null || await userService.GetAsync(u => u.Id == request.ManagerId, asNoTracking: true) is null)
 			return null;
+		
+		var oldrequset = requestModel;
 
 		requestModel.Status = request.Status;
 		requestModel.IsApproved = request.IsApproved;
@@ -21,6 +24,8 @@ public class UpdateRequestHandler(IRequestService service, IUserService userServ
 		requestModel.DateFrom = request.DateFrom;
 		requestModel.DateTo = request.DateTo;
 		requestModel.ManagerId = request.ManagerId;
+
+		await balanceService.UpdateBalanceDaysOnRequestUpdate(requestModel, oldrequset);
 
 		await service.UpdateAsync(requestModel);
 

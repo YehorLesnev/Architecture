@@ -26,4 +26,13 @@ public static class BalanceHelper
 				BalanceAmount = Constants.Constants.BalanceConstants.DefaultSickLeaveWithAttachmentsDays
 			},
 		];
+
+	public static decimal GetTotalDays( DateTime dateFrom, DateTime dateTo)
+	{
+		if(dateTo == null || dateFrom == null)
+			return 0;
+
+		decimal totalDays = (decimal)((TimeSpan)(dateTo - dateFrom)).TotalDays;
+		return Math.Round(totalDays * 2, MidpointRounding.AwayFromZero) / 2;
+	}
 }

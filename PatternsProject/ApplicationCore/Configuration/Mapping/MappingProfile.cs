@@ -28,6 +28,7 @@ public class MappingProfile : Profile
 		CreateMap<CreateRequestCommand, RequestModel>();
 
 		CreateMap<UpdateRequestDto, RequestModel>();
+		CreateMap<UpdateRequestCommand , RequestModel>();
 		CreateMap<UpdateRequestDto, UpdateRequestCommand>();
 
 		CreateMap<DeleteRequestCommand, RequestModel>();
