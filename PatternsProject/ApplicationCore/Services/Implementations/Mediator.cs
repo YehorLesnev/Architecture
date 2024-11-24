@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Services.Interfaces;
+﻿using ApplicationCore.Observer.Interfaces;
+using ApplicationCore.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ApplicationCore.Services.Implementations;
@@ -17,16 +18,6 @@ public class Mediator(IServiceProvider serviceProvider) : IMediator
 		return serviceProvider.GetService(typeof(IRequestHandler<TRequest, TResult>)) is not IRequestHandler<TRequest, TResult> handler
 			? throw new InvalidOperationException($"No handler found for {typeof(TRequest).Name}")
 			: await handler.HandleAsync(request);
-	}
-
-	public async Task PublishAsync<TNotification>(TNotification notification) where TNotification : INotification
-	{
-		var handlers = serviceProvider.GetServices(typeof(INotificationHandler<TNotification>)) as IEnumerable<INotificationHandler<TNotification>> ?? throw new InvalidOperationException($"No handlers found for {typeof(TNotification).Name}");
-
-		foreach (var handler in handlers)
-		{
-			await handler.HandleAsync(notification);
-		}
 	}
 
 	public async Task<TResult?> QueryAsync<TResult>(IRequest<TResult> query)

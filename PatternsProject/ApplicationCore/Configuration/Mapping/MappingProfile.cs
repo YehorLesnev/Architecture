@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using ApplicationCore.CQRS.Commands.Request;
 using ApplicationCore.CQRS.Commands.Comment;
 using ApplicationCore.CQRS.Commands.File;
+using ApplicationCore.CQRS.Commands.Notification;
 
 namespace ApplicationCore.Configuration.Mapping;
 
@@ -69,9 +70,9 @@ public class MappingProfile : Profile
 
 		// Notification Mappings
 		CreateMap<NotificationModel, ResponseNotificationDto>();
-		CreateMap<CreateNotificationDto, NotificationModel>()
-			.ForMember(dest => dest.NotificationId, opt => opt.Ignore())
-			.ForMember(dest => dest.DateCreated, opt => opt.Ignore());
+		CreateMap<CreateNotificationCommand, NotificationModel>();
+		CreateMap<CreateNotificationDto, CreateNotificationCommand>();
+		CreateMap<CreateNotificationDto, NotificationModel>();
 
 		// Balance Mappings
 		CreateMap<BalanceModel, ResponseBalanceDto>();
