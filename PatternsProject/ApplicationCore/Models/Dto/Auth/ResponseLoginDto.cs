@@ -5,7 +5,7 @@ namespace ApplicationCore.Models.Dto.Auth
     public record ResponseLoginDto
     {
         [Required]
-        public string Email { get; set; }
+        public Guid UserId { get; set; }
 
         [Required] 
         public string Token { get; set; }
