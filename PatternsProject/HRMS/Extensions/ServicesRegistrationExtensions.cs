@@ -1,10 +1,12 @@
 ﻿using ApplicationCore.CQRS.Commands.Balance;
 using ApplicationCore.CQRS.Commands.Comment;
 using ApplicationCore.CQRS.Commands.File;
+using ApplicationCore.CQRS.Commands.Notification;
 using ApplicationCore.CQRS.Commands.Request;
 using ApplicationCore.CQRS.Queries.Balance;
 using ApplicationCore.CQRS.Queries.Comment;
 using ApplicationCore.CQRS.Queries.File;
+using ApplicationCore.CQRS.Queries.Notification;
 using ApplicationCore.CQRS.Queries.Request;
 using ApplicationCore.CQRS.Queries.User;
 using ApplicationCore.Models;
@@ -16,6 +18,7 @@ using ApplicationCore.Services.Implementations;
 using ApplicationCore.Services.Implementations.Handlers.Balance;
 using ApplicationCore.Services.Implementations.Handlers.Comment;
 using ApplicationCore.Services.Implementations.Handlers.File;
+using ApplicationCore.Services.Implementations.Handlers.Notification;
 using ApplicationCore.Services.Implementations.Handlers.Request;
 using ApplicationCore.Services.Implementations.Handlers.User;
 using ApplicationCore.Services.Interfaces;
@@ -72,9 +75,13 @@ public static class ServicesRegistrationExtensions
 		serviceCollection.AddScoped<IRequestHandler<GetFilesByRequestQuery, IEnumerable<FileModel>>, GetFilesByRequestHandler>();
 		serviceCollection.AddScoped<IRequestHandler<CreateFileCommand>, CreateFileHandler>();
 
+		serviceCollection.AddScoped<IRequestHandler<GetNotificationsByUserQuery, IEnumerable<NotificationModel>>, GetNotificationsByUserHandler>();
+		serviceCollection.AddScoped<IRequestHandler<CreateNotificationCommand>, CreateNotificationHandler>();
+
 		// observer
-		serviceCollection.AddSingleton<ISubject, NotificationSubject>();
-		serviceCollection.AddSingleton<NotificationService>();
+		serviceCollection.AddScoped<ISubject, NotificationSubject>();
+		serviceCollection.AddScoped<NotificationObserverService>();
+
 		return serviceCollection;
 	}
 }

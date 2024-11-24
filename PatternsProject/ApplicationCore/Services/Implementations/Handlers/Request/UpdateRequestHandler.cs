@@ -30,7 +30,7 @@ public class UpdateRequestHandler(IRequestService service, IUserService userServ
 			{
 				UserId = requestModel.UserId,
 				SenderId = requestModel.ManagerId,
-				Text = "Request approved"
+				Text = $"Request approved{(string.IsNullOrEmpty(request.NotificationText) ? string.Empty : $": {request.NotificationText}")}"
 			});
 		}
 		else

@@ -5,12 +5,22 @@ using AutoMapper;
 
 namespace ApplicationCore.Observer.Implementations;
 
-public class InAppObserver(INotificationService notificationService, IMapper mapper) : IObserver
+public class InAppObserver : IObserver
 {
+    private readonly INotificationService _notificationService;
+
+	private readonly IMapper _mapper;
+
+	public InAppObserver(INotificationService notificationService, IMapper mapper)
+    {
+        _notificationService = notificationService;
+		_mapper = mapper;
+	}
+
     public async Task UpdateAsync(INotification notification)
     {
-        var notificationModel = mapper.Map<NotificationModel>(notification);
+        var notificationModel = _mapper.Map<NotificationModel>(notification);
 
-		await notificationService.CreateAsync(notificationModel);
+		await _notificationService.CreateAsync(notificationModel);
 	}
 }
