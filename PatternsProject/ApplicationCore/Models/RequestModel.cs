@@ -17,6 +17,8 @@ public class RequestModel
 
 	public string Status { get; set; }
 
+	public bool IsApproved { get; set; } = false;
+
 	public DateTime DateCreated { get; set; } = DateTime.UtcNow;
 
 	public Guid ManagerId { get; set; }

@@ -8,6 +8,7 @@ public class UpdateRequestCommand : IRequest<RequestModel>
 {
 	public Guid RequestId { get; set; }
     public string Type { get; set; }
+    public bool IsApproved { get; set; }
     public DateTime DateFrom { get; set; }
     public DateTime? DateTo { get; set; }
     public string Status { get; set; }

@@ -14,6 +14,7 @@ public class UpdateRequestHandler(IRequestService service, IUserService userServ
             return null;
 
         requestModel.Status = request.Status;
+        requestModel.IsApproved = request.IsApproved;
         requestModel.Type = request.Type;
         requestModel.DateFrom = request.DateFrom;
         requestModel.DateTo = request.DateTo;
