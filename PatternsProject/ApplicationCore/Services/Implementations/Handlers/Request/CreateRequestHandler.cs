@@ -14,7 +14,11 @@ public class CreateRequestHandler(IRequestService service, IUserService userServ
 
         var guid = Guid.NewGuid();
         var model = mapper.Map<RequestModel>(request);
-        model.Id = guid;
+
+        if(model is null)
+            return null;
+
+		model.Id = guid;
 
         await balanceService.UpdateBalanceDaysOnRequestCreate(model);
 
