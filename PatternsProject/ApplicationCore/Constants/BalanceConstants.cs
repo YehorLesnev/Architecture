@@ -6,9 +6,9 @@ public static partial class Constants
 	{
 		public const string Vacation = "Vacation";
 
-		public const string SickLeave = "Sick Leave";
+		public const string SickLeave = "Health Day Off";
 
-		public const string SickLeaveWithAttachments = "Sick leave with medical confirmation";
+		public const string SickLeaveWithAttachments = "Sick Leave";
 	}
 
 	public static class BalanceConstants

@@ -8,8 +8,8 @@ public static partial class Constants
 
 		public static string UnpaidVacation => "Unpaid Vacation";
 
-		public static string SickLeave => "Sick leave";
+		public static string SickLeave => "Sick Leave";
 
-		public static string HealthDayoff => "Health Day off";
+		public static string HealthDayoff => "Health Day Off";
 	}
 }
