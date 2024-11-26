@@ -11,6 +11,7 @@ using ApplicationCore.CQRS.Commands.Request;
 using ApplicationCore.CQRS.Commands.Comment;
 using ApplicationCore.CQRS.Commands.File;
 using ApplicationCore.CQRS.Commands.Notification;
+using ApplicationCore.CQRS.Commands.Balance;
 
 namespace ApplicationCore.Configuration.Mapping;
 
@@ -77,6 +78,8 @@ public class MappingProfile : Profile
 
 		// Balance Mappings
 		CreateMap<BalanceModel, ResponseBalanceDto>();
+		CreateMap<UpdateBalanceDto, UpdateBalanceCommand>();
+		CreateMap<UpdateBalanceCommand, BalanceModel>();
 		CreateMap<UpdateBalanceDto, BalanceModel>()
 			.ForMember(dest => dest.BalanceId, opt => opt.Ignore());
 	}

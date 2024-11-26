@@ -13,6 +13,6 @@ public class UpdateBalanceHandler(IBalanceService service, IUserService userServ
 			await service.GetAsync(r => r.BalanceId == command.BalanceId, asNoTracking: true) is null)
 				throw new Exception("Couldn't update balance. User or balance not found.");
 
-		await service.CreateAsync(mapper.Map<BalanceModel>(command));
+		await service.UpdateAsync(mapper.Map<BalanceModel>(command));
 	}
 }
