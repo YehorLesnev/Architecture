@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.CQRS.Commands.Request;
 using ApplicationCore.CQRS.Queries.Request;
 using ApplicationCore.Models;
+using ApplicationCore.Models.Dto.File;
 using ApplicationCore.Models.Dto.Request;
 using ApplicationCore.Services.Interfaces;
 using AutoMapper;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HRMS.Controllers;
 
 [Route("requests")]
-public class RequestController(IMediator mediator, IMapper mapper) : BaseController(mediator)
+public class RequestController(IMediator mediator, IMapper mapper, IRequestService requestService, IFileService fileService) : BaseController(mediator)
 {
 	[HttpGet("userId/{userId}")]
 	public async Task<IActionResult> GetRequestsByUser([FromRoute] Guid userId)
@@ -23,6 +24,25 @@ public class RequestController(IMediator mediator, IMapper mapper) : BaseControl
 	{
 		var requests = await Mediator.QueryListAsync<RequestModel>(new GetRequestsByManagerQuery { ManagerId = managerId });
 		return Ok(mapper.Map<IEnumerable<ResponseRequestDto>>(requests));
+	}
+
+	[HttpGet("{requestId}")]
+	public async Task<IActionResult> GetRequestById([FromRoute] Guid requestId)
+	{
+		var request = await requestService.GetAsync(x => x.Id == requestId);
+
+		if (request is null)
+			return NotFound("Request with specified id not found");
+
+		var requestFile = await fileService.GetAsync(x => x.RequestId == request.Id);
+
+		var requestWithFileDto = new GetUserRequestWithFileDto
+		{
+			Request = mapper.Map<ResponseRequestDto>(request),
+			File = mapper.Map<ResponseFileDto>(requestFile)
+		};
+
+		return Ok(requestWithFileDto);
 	}
 
 	[HttpPost]
