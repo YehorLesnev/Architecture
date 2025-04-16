@@ -1,0 +1,34 @@
+services:
+  hrms:
+    image: ${DOCKER_REGISTRY-}hrms
+    build:
+      context: .
+      dockerfile: HRMS/Dockerfile
+    ports:
+     - "7100:8080"
+     - "7101:8081"
+    restart: 
+        always
+    volumes:
+        - ~/.aspnet/https:/https
+    depends_on:
+      - mssql
+      - seq
+
+  mssql:
+    container_name: sql-server-hrms-api
+    image: mcr.microsoft.com/mssql/server:latest
+    environment:
+      - ACCEPT_EULA=Y
+    platform: linux/amd64
+    ports:
+      - "1401:1433"
+
+  seq:
+    container_name: seq-pazzeria-api
+    image:  datalust/seq:latest
+    environment:
+    - ACCEPT_EULA=Y
+    ports:
+    - 5341:5341
+    - 8081:80
